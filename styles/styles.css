@@ -1,0 +1,333 @@
+:root {
+    /* ===== Colors ===== */
+    /* White & Black */
+    --color-white: #FFFFFF;
+    --color-black: #000000;
+
+    /* Grey */
+    --color-grey-600: #3D6666;
+    --color-grey-550: #54978D;
+    --color-grey-500: #5E7A7D;
+    --color-grey-400: #7F9D9F;
+    --color-grey-300: #9EBBBD;
+    --color-grey-200: #C5E4E7;
+    --color-grey-50:  #F3F9FA;
+
+    /* Green */
+    --color-green-900: #00474B;
+    --color-green-800: #0B5C61;
+    --color-green-750: #0D848D;
+    --color-green-400: #26C2AE;
+    --color-green-200: #9FE8DF;
+
+    /* Orange */
+    --color-orange-400: #E17452;
+
+    /* ===== Spacing ===== */
+    --spacing-0: 0rem;
+    --spacing-100: 0.8rem;
+    --spacing-200: 1.6rem;
+    --spacing-300: 2.4rem;
+    --spacing-400: 3.2rem;
+    --spacing-600: 4.8rem;
+    --spacing-1000: 8rem;
+    --spacing-1200: 9.6rem;
+    --spacing-1500: 12rem;
+    --spacing-1600: 12.8rem;
+
+    /* ===== Typography ===== */
+    --font-preset-1-size: 4.8rem;
+    --font-preset-1-line-height: 7.2rem;
+    --font-preset-1-letter-spacing: 0rem;
+
+    --font-preset-2-size: 3.2rem;
+    --font-preset-2-line-height: 4.7rem;
+    --font-preset-2-letter-spacing: -0.67px;
+
+    --font-preset-3-size: 2.4rem;
+    --font-preset-3-line-height: 3.6rem;
+    --font-preset-3-letter-spacing: 0rem;
+
+    --font-preset-4-size: 2rem;
+    --font-preset-4-line-height: 3rem;
+    --font-preset-4-letter-spacing: 0rem;
+
+    --font-preset-5-size: 1.6rem;
+    --font-preset-5-line-height: 2.4rem;
+    --font-preset-5-letter-spacing: 0rem;
+
+    --font-preset-6-size: 1.2rem;
+    --font-preset-6-line-height: 1.6rem;
+    --font-preset-6-letter-spacing: 0rem;
+}
+
+html {
+    font-size: 10px;
+}
+
+body {
+    /* Box model */
+    min-height: 100vh;
+
+    /* Layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-1000);
+
+    /* Typography */
+    font-family: 'Space Mono', sans-serif;
+    font-weight: 700;
+
+    /* Colors */
+    background-color: var(--color-grey-200);
+}
+
+/* ========== Preset classes ========== */
+.font-preset-1 {
+    font-size: var(--font-preset-1-size);
+    line-height: var(--font-preset-1-line-height);
+    letter-spacing: var(--font-preset-1-letter-spacing);
+}
+
+.font-preset-2 {
+    font-size: var(--font-preset-2-size);
+    line-height: var(--font-preset-2-line-height);
+    letter-spacing: var(--font-preset-2-letter-spacing);
+}
+
+.font-preset-3 {
+    font-size: var(--font-preset-3-size);
+    line-height: var(--font-preset-3-line-height);
+    letter-spacing: var(--font-preset-3-letter-spacing);
+}
+
+.font-preset-4 {
+    font-size: var(--font-preset-4-size);
+    line-height: var(--font-preset-4-line-height);
+    letter-spacing: var(--font-preset-4-letter-spacing);
+}
+
+.font-preset-5 {
+    font-size: var(--font-preset-5-size);
+    line-height: var(--font-preset-5-line-height);
+    letter-spacing: var(--font-preset-5-letter-spacing);
+}
+
+.font-preset-6 {
+    font-size: var(--font-preset-6-size);
+    line-height: var(--font-preset-6-line-height);
+    letter-spacing: var(--font-preset-6-letter-spacing);
+}
+
+/* ========== App styles ========== */
+.app {
+    border-radius: 25px;
+    padding: var(--spacing-400);
+    width: 92rem;
+    max-width: 92rem;
+    display: flex;
+    gap: var(--spacing-600);
+    background-color: var(--color-white);
+}
+
+.app__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-400);
+    color: var(--color-grey-500);
+}
+
+.app__section {
+    flex: 1;
+}
+
+.inputBox {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+}
+
+.wrapper {
+    position: relative;
+}
+
+.inputBox__icon {
+    position: absolute;
+    left: var(--spacing-200);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.input {
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    outline: transparent;
+    padding: var(--spacing-100) var(--spacing-200);
+    text-align: end;
+    color: var(--color-green-900);
+    background-color: var(--color-grey-50);
+    transition: 0.3s ease-in-out outline;
+}
+
+.input:focus {
+    outline: 2px solid var(--color-green-400);
+}
+
+/* Tip options grid */
+.app__tip-options-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: var(--spacing-200);
+}
+
+.app__tip-options-grid input {
+    text-align: center;
+}
+
+.app__tip-option:not(.custom) {
+    border-radius: 5px;
+    padding: var(--spacing-100) var(--spacing-200);
+    background-color: var(--color-green-900);
+    color: var(--color-white);
+    text-align: center;
+    transition: 0.2s background-color, 0.2s color;
+}
+
+.app__tip-option:not(.custom) label {
+    cursor: pointer;
+}
+
+.app__tip-option:not(.custom):is(:hover, :active) {
+    cursor: pointer;
+    background-color: var(--color-green-200);
+    color: var(--color-green-900);
+}
+
+.app__tip-option:is(.selected){
+    background-color: var(--color-green-400);
+    color: var(--color-green-900);
+}
+
+.app_customTip {
+    color: var(--color-grey-550);
+}
+
+/* Hidding arrows */
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Hidding radio buttons */
+.app_tipRadio {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* ========== Tip section ========== */
+.app__tip-section {
+    border-radius: 15px;
+    padding: var(--spacing-300) var(--spacing-400);
+    background-color: var(--color-green-900);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.app__tip-summary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-300);
+}
+
+.summary-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-name {
+    color: var(--color-white);
+}
+
+.person {
+    color: var(--color-grey-400);
+}
+
+.summary__total {
+    color: var(--color-green-400);
+}
+
+.app__reset {
+    border: none;
+    border-radius: 5px;
+    padding: var(--spacing-100) var(--spacing-400);
+    text-transform: uppercase;
+    color: var(--color-green-900);
+    background-color: var(--color-green-400);
+    transition: 0.2s background-color;
+}
+
+.app__reset:is(:hover, :active) {
+    cursor: pointer;
+    background-color: var(--color-green-200);
+}
+
+/* =================================== Media queries for responsive design =================================== */
+@media (max-width: 60rem) {
+    body {
+        padding: var(--spacing-1000);
+    }
+    .app {
+        padding: var(--spacing-600) var(--spacing-600);
+        width: 100%;
+        max-width: 60.8rem;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 36rem) {
+    body {
+        padding-top: var(--spacing-1000);
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .app {
+        padding: var(--spacing-300) var(--spacing-400);
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .app__tip-options-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: var(--spacing-200);
+    }
+
+    .app__tip-section {
+        gap: var(--spacing-300);
+    }
+
+    .app__tip-summary {
+        gap: var(--spacing-100);
+    }
+
+    .summary__total {
+        font-size: 32px;
+    }
+}
