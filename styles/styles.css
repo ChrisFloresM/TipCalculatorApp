@@ -177,6 +177,20 @@ body {
     outline: 2px solid var(--color-green-400);
 }
 
+.input:is(.invalid) {
+    outline: 2px solid var(--color-orange-400);
+}
+
+.app__error-message {
+    position: absolute;
+    color: var(--color-orange-400);
+    right: 0;
+    top: 10px;
+}
+
+.app__error-message.hidden {
+    display: none;
+}
 /* Tip options grid */
 .app__tip-options-grid {
     display: grid;

@@ -36,6 +36,7 @@
 					<!-- Input for bill amount-->
 					<div class="app__billInputBox inputBox">
 						<label class="label font-preset-5" for="billAmount">Bill</label>
+						<p class="app__error-message hidden">Can't be zero</p>
 						<div class="wrapper">
 							<img src="img/icon-dollar.svg" alt="An icon of a dollar sign" class="inputBox__icon">
 							<input id="billAmount" type="number" class="app__billInput input font-preset-3">
@@ -67,14 +68,15 @@
 								<input type="radio" name="tipPercent" value="50" class="app_tipRadio" hidden>
 							</label>
 							<div class="app__tip-option custom font-preset-3">
-								<input type="number" class="app_customTip input" placeholder="Custom" min="0" max="100">
+								<input type="number" class="app_customTip input" placeholder="Custom" min="1" max="100">
 							</div>
 						</div>
 					</div>
 
 					<!-- Input for number of people -->
-					<div class="app__peopleInput inputBox">
+					<div class="app__peopleInputBox inputBox">
 						<label class="label font-preset-5" for="totalPeople">Number of people</label>
+						<p class="app__error-message hidden">Can't be zero</p>
 						<div class="wrapper">
 							<img src="img/icon-person.svg" alt="An icon of a person" class="inputBox__icon">
 							<input id="totalPeople" type="number" class="app__peopleInput input font-preset-3">
