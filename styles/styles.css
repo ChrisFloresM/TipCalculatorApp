@@ -197,10 +197,6 @@ body {
     transition: 0.2s background-color, 0.2s color;
 }
 
-.app__tip-option:not(.custom) label {
-    cursor: pointer;
-}
-
 .app__tip-option:not(.custom):is(:hover, :active) {
     cursor: pointer;
     background-color: var(--color-green-200);
