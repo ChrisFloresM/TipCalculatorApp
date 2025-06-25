@@ -183,14 +183,21 @@ body {
 
 .app__error-message {
     position: absolute;
-    color: var(--color-orange-400);
     right: 0;
     top: 10px;
+    font-size: 1rem;
+    color: var(--color-orange-400);
 }
 
 .app__error-message.hidden {
     display: none;
 }
+
+.app__error-message.custom-tip {
+    top: 100%;
+    bottom: 10px;
+}
+
 /* Tip options grid */
 .app__tip-options-grid {
     display: grid;
