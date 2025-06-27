@@ -304,6 +304,11 @@ input[type="number"] {
     background-color: var(--color-green-200);
 }
 
+.app__reset.disabled {
+    cursor: auto;
+    background-color: var(--color-green-800);
+}
+
 /* =================================== Media queries for responsive design =================================== */
 @media (max-width: 60rem) {
     body {

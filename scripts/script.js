@@ -1,90 +1,135 @@
-/*toggling selected button */
-let currentSelectedTipEl = document.querySelector('.app_tipRadio:checked');
-let currentSelectedLablEl = null;
-let tipPercentage = Number(currentSelectedTipEl?.value / 100) || null;
+/* 1. Input elements */
+const inputPeopleEl = document.querySelector('.app__peopleInput');
+const inputBillEl = document.querySelector('.app__billInput');
 const customEl = document.querySelector('.app_customTip');
+const radioButtons = document.querySelectorAll('.app_tipRadio');
+
+/* 2. Display elements */
+const tipAmountEl = document.querySelector('.tip-per-person');
+const totalPersonEl = document.querySelector('.total-per-person');
+
+/* 3. Reset button */
+const resetButton = document.querySelector('.app__reset');
+
+/* 4. Default tip */
+const defaultTip = document.querySelector('.app_tipRadio.default');
+
+const tipContentObj = {
+	selectedEl: defaultTip,
+	selectedTip: 0,
+	customTip: 0,
+	useCustomTip: false
+}
 
 document.addEventListener('DOMContentLoaded', init);
 
 function init() {
-	const radioButtons = document.querySelectorAll('.app_tipRadio');
+	/* Add event listeners */
+	inputPeopleEl.addEventListener('input', calculateTip);
+	inputBillEl.addEventListener('input', calculateTip);
+	radioButtons.forEach(radioButton => {
+		radioButton.addEventListener('click', tipSelectionListener);
+	})
+	customEl.addEventListener('input', customTipListener);
 
-	const checkedRadio = document.querySelector('.app_tipRadio:checked');
-	if (checkedRadio) {
-		currentSelectedLablEl = checkedRadio.closest('.app__tip-option');
-		currentSelectedLablEl?.classList.add('selected');
+	selectTipPercentage();
+
+	if (tipContentObj.useCustomTip) {
+		tipContentObj.customTip = Number(customEl.value) / 100;
 	}
 
-	radioButtons.forEach(tipOptionsBtn => {
-		tipOptionsBtn.addEventListener('change', tipSelectionListener);
-	})
-
-	customEl.addEventListener('input', calculateTip);
-
 	calculateTip();
 }
 
-/* ===== Tip selection ==== */
-function tipSelectionListener(e) {
-	const labelEl = e.currentTarget.closest('.app__tip-option');
-	currentSelectedLablEl?.classList.remove('selected');
+/* Tip Selection radio Buttons */
+function tipSelectionListener() {
 	customEl.value = "";
-
-	labelEl.classList.add('selected');
-	currentSelectedLablEl = labelEl
-
-	tipPercentage = Number(e.currentTarget.value / 100);
+	removeSelectedClass();
+	selectTipPercentage();
 	calculateTip();
 }
 
-/* Custom tip */
-function getCustomTip() {
-	const value = Number(customEl.value);
-	if (!value) {
-		if (currentSelectedLablEl && !currentSelectedLablEl.classList.contains('selected')) {
-			currentSelectedLablEl.classList.add('selected');
-		}
+function selectTipPercentage() {
+	const checkedElement = document.querySelector('.app_tipRadio:checked');
+	if (checkedElement) {
+		const currentSelectedLablEl = checkedElement.closest('.app__tip-option');
+		currentSelectedLablEl?.classList.add('selected');
+		tipContentObj.selectedEl = checkedElement;
+		tipContentObj.selectedTip = Number(checkedElement.value) / 100;
+		tipContentObj.useCustomTip = false;
+	} else {
+		tipContentObj.useCustomTip = true;
+	}
+}
 
-		return true;
+/* Custom tip listener */
+function customTipListener() {
+	const customValue = Number(customEl.value);
+
+	if (!customValue) {
+		tipContentObj.selectedEl.checked = true;
+		clearErrorMessage(customEl);
+		tipSelectionListener();
+		return;
+	}
+
+	if (customValue <= 0 || customValue > 100) {
+		setErrorMessage(customEl, "Value is out of range");
+		return;
 	}
 
 	if (!customEl.validity.valid) {
 		setErrorMessage(customEl, "Invalid input");
-		return false;
-	}
-
-	if (value > 100 || value <= 0) {
-		setErrorMessage(customEl, "Out of range!")
-		return false;
-	}
-
-	if (currentSelectedLablEl && currentSelectedLablEl.classList.contains('selected')) {
-		if (currentSelectedTipEl) {
-			currentSelectedTipEl.checked = false;
-		}
-
-		currentSelectedLablEl.classList.remove('selected');
+		return;
 	}
 
 	clearErrorMessage(customEl);
-	tipPercentage = value / 100;
-	return true;
+	removeSelectedClass();
+	tipContentObj.selectedEl.checked = false;
+
+	tipContentObj.useCustomTip = true;
+	tipContentObj.customTip = customValue / 100;
+
+	calculateTip();
 }
-/* ======================== Form validations =========================== */
-/*
-*  input.checkValidity()
-*  input.validity.valid
-*
-* */
-const inputPeopleEl = document.querySelector('.app__peopleInput');
-const inputBillEl = document.querySelector('.app__billInput');
 
-inputPeopleEl.addEventListener('input', calculateTip);
-inputBillEl.addEventListener('input', calculateTip);
+function removeSelectedClass() {
+	const currentSelected = document.querySelector('.selected');
+	currentSelected?.classList.remove('selected');
+}
 
+/* Calculate tip */
+function calculateTip() {
+	/* 1. Validate all inputs */
+	const validInputBill = inputValidation(inputBillEl);
+	const validInputPeople = inputValidation(inputPeopleEl);
+
+	if (!validInputBill || !validInputPeople) return;
+
+	/* Get the tip percentage */
+	const tip = tipContentObj.useCustomTip ? tipContentObj.customTip : tipContentObj.selectedTip;
+
+	/* 3. Calculate tip */
+	const billAmount = Number(inputBillEl.value);
+	const totalPersons = Number(inputPeopleEl.value);
+
+	const tipAmount = (tip * billAmount) / totalPersons;
+	const totalPerson = (billAmount / totalPersons) + tipAmount;
+
+	/* 4. Update the DOM with the tip value */
+	tipAmountEl.textContent = `$${tipAmount.toFixed(2)}`;
+	totalPersonEl.textContent = `$${totalPerson.toFixed(2)}`;
+
+	if (resetButton.classList.contains('disabled')) {
+		resetButton.classList.remove('disabled');
+		resetButton.addEventListener('click', resetListener);
+	}
+}
+
+/* Input number validations and error handling */
 function inputValidation(currentInput) {
-
 	if (!currentInput.value) {
+		clearErrorMessage(currentInput);
 		return false;
 	}
 
@@ -98,13 +143,16 @@ function inputValidation(currentInput) {
 		return false;
 	}
 
-	if (currentInput.classList.contains('app__peopleInput') && Number(currentInput.value) > 100) {
-		setErrorMessage(currentInput, "Value out of range (Max. 100 people)");
+	if (
+		(currentInput.classList.contains('app__peopleInput')
+			|| currentInput.classList.contains('app_customTip'))
+			&& Number(currentInput.value) > 100
+	) {
+		setErrorMessage(currentInput, "Value out of range (Max. 100)");
 		return false;
 	}
 
 	clearErrorMessage(currentInput);
-
 	return true;
 }
 
@@ -133,26 +181,27 @@ function clearErrorMessage(element) {
 		errorMsgEl.classList.add('hidden');
 }
 
+/* Reset button */
+function resetListener() {
+	tipAmountEl.textContent = '$0.00'
+	totalPersonEl.textContent = '$0.00'
 
-/* ======================== Tip calculation =========================== */
-/*
-*
-* */
-const tipAmountEl = document.querySelector('.tip-per-person');
-const totalPersonEl = document.querySelector('.total-per-person');
+	inputPeopleEl.value = "";
+	inputBillEl.value = "";
+	customEl.value = "";
 
-function calculateTip() {
-	if (!inputValidation(inputBillEl) || !inputValidation(inputPeopleEl) || !getCustomTip()) {
-		return;
+	if (tipContentObj.selectedEl) {
+		tipContentObj.selectedEl.checked = false;
 	}
 
-	const billAmount = Number(inputBillEl.value);
-	const totalPersons = Number(inputPeopleEl.value);
+	tipContentObj.selectedEl = defaultTip;
+	tipContentObj.selectedEl.checked = true;
+	tipSelectionListener();
+	clearErrorMessage(customEl);
 
-	const tipAmount = (tipPercentage * billAmount) / totalPersons;
-	const totalPerson = (billAmount / totalPersons) + tipAmount;
-
-	tipAmountEl.textContent = `$${tipAmount.toFixed(2)}`;
-	totalPersonEl.textContent = `$${totalPerson.toFixed(2)}`;
+	resetButton.classList.add('disabled');
+	resetButton.removeEventListener('click', resetListener);
 }
+
+
 
