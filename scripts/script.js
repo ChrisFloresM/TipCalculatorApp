@@ -195,7 +195,7 @@ function resetListener() {
 	}
 
 	tipContentObj.selectedEl = defaultTip;
-	tipContentObj.selectedEl.checked = true;
+	tipContentObj.selectedEl.checked = tru|e;
 	tipSelectionListener();
 	clearErrorMessage(customEl);
 
