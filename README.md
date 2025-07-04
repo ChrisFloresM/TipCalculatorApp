@@ -15,15 +15,15 @@ A very simple and responsive web app that helps users calculate how much tip to 
 
 
 ## Main features:
--Allows user to input:
-    -Bill Amount
-    -Tip percentage
-    -Number of people splitting the bill
--Displays:
-    -Tip amount per person
-    -Total amount per person
--Error handing for invalid or empty inputs
--Fully responsive for mobile, tablet and desktop
+-  Allows user to input:
+    - Bill Amount
+    - Tip percentage
+    - Number of people splitting the bill
+- Displays:
+    - Tip amount per person
+    - Total amount per person
+- Error handing for invalid or empty inputs
+- Fully responsive for mobile, tablet and desktop
 
 ## How to use
 1. Enter the bill amount
