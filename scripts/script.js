@@ -42,8 +42,8 @@ function init() {
 }
 
 /* Tip Selection radio Buttons */
-function tipSelectionListener() {
-	customEl.value = "";
+function tipSelectionListener(skipReset = false) {
+	if (!skipReset) customEl.value = "";
 	removeSelectedClass();
 	selectTipPercentage();
 	calculateTip();
@@ -64,29 +64,17 @@ function selectTipPercentage() {
 
 /* Custom tip listener */
 function customTipListener() {
+	if (!inputValidation(customEl)) {
+		tipContentObj.selectedEl.checked = true;
+		tipSelectionListener(true);
+		return;
+	}
+
 	const customValue = Number(customEl.value);
 
-	if (!customValue) {
-		tipContentObj.selectedEl.checked = true;
-		clearErrorMessage(customEl);
-		tipSelectionListener();
-		return;
-	}
-
-	if (customValue <= 0 || customValue > 100) {
-		setErrorMessage(customEl, "Value is out of range");
-		return;
-	}
-
-	if (!customEl.validity.valid) {
-		setErrorMessage(customEl, "Invalid input");
-		return;
-	}
-
-	clearErrorMessage(customEl);
 	removeSelectedClass();
-	tipContentObj.selectedEl.checked = false;
 
+	tipContentObj.selectedEl.checked = false;
 	tipContentObj.useCustomTip = true;
 	tipContentObj.customTip = customValue / 100;
 
@@ -128,17 +116,20 @@ function calculateTip() {
 
 /* Input number validations and error handling */
 function inputValidation(currentInput) {
-	if (!currentInput.value) {
-		clearErrorMessage(currentInput);
-		return false;
-	}
+	const value = currentInput.value;
 
 	if (!currentInput.validity.valid) {
 		setErrorMessage(currentInput, "Invalid input characters");
 		return false;
 	}
 
-	if (currentInput.value && Number(currentInput.value) <= 0) {
+	if (!value) {
+		clearErrorMessage(currentInput);
+		return false;
+	}
+
+	const numericValue = Number(value);
+	if (isNaN(numericValue) || numericValue <= 0) {
 		setErrorMessage(currentInput, "Value can't be zero nor empty");
 		return false;
 	}
@@ -195,7 +186,7 @@ function resetListener() {
 	}
 
 	tipContentObj.selectedEl = defaultTip;
-	tipContentObj.selectedEl.checked = tru|e;
+	tipContentObj.selectedEl.checked = true;
 	tipSelectionListener();
 	clearErrorMessage(customEl);
 
